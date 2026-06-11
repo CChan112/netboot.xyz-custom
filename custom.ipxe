@@ -1,5 +1,52 @@
 #!ipxe
-:mint_cinnamon
-kernel https://boot.netboot.xyz/memdisk iso raw
-initrd https://netcologne.de
+
+# 主菜单入口
+:custom_menu
+menu Linux Mint Custom Selection
+item --gap --             Linux Mint Versions
+item mint_22_3           Linux Mint 22.3 (Zena)
+item mint_22_1           Linux Mint 22.1
+item --gap --             Options
+item return              Return to Main Menu
+choose --default mint_22_3 --timeout 10000 target && goto ${target}
+
+# 22.3 版本子菜单
+:mint_22_3
+menu Linux Mint 22.3 (Zena) Editions
+item mint_22_3_cinnamon  Linux Mint 22.3 Cinnamon
+item mint_22_3_mate      Linux Mint 22.3 MATE
+item mint_22_3_xfce      Linux Mint 22.3 XFCE
+item custom_menu         Back to Mint Versions
+choose target && goto ${target}
+
+# 22.1 版本子菜单
+:mint_22_1
+menu Linux Mint 22.1 Editions
+item mint_22_1_cinnamon  Linux Mint 22.1 Cinnamon
+item mint_22_1_mate      Linux Mint 22.1 MATE
+item mint_22_1_xfce      Linux Mint 22.1 XFCE
+item custom_menu         Back to Mint Versions
+choose target && goto ${target}
+
+# --- 具体的引导逻辑 ---
+
+:mint_22_3_cinnamon
+set iso_url https://netcologne.de
+goto boot_iso
+
+:mint_22_3_mate
+set iso_url https://netcologne.de
+goto boot_iso
+
+:mint_22_3_xfce
+set iso_url https://netcologne.de
+goto boot_iso
+
+# 通用引导块
+:boot_iso
+kernel https://netboot.xyz iso raw
+initrd ${iso_url}
 boot
+
+:return
+chain --autofree menu.ipxe
