@@ -1,12 +1,16 @@
 #!ipxe
-###
-### netboot.xyz-custom menu
-###
+### Linux Mint Cinnamon Custom Menu ###
+:custom_menu
+menu Linux Mint Cinnamon
+item mint_cinnamon Boot Linux Mint Cinnamon ISO
+item return Return to Main Menu
+choose --default mint_cinnamon --timeout 10000 target && goto ${target}
 
-:start
-echo Hello world!
-sleep 10
-goto custom_exit
+:mint_cinnamon
+kernel https://boot.netboot.xyz/memdisk iso raw
+# Replace the URL below with your local or preferred Mint ISO link
+initrd https://layeronline.com
+boot
 
-:custom_exit
-exit 0
+:return
+chain --autofree menu.ipxe
