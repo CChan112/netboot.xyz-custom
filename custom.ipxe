@@ -1,40 +1,38 @@
 #!ipxe
 
 :custom_menu
-menu --- [ LINUX MINT DISTRIBUTION SELECTOR ] ---
-item --gap --             ************************************************
-item --gap --             >> STEP 1: SELECT LINUX MINT VERSION
-item --gap --             ************************************************
-item mint_22_3_menu       [V] Linux Mint 22.3 (Zena) -- LATEST VERSION
-item mint_22_1_menu       [V] Linux Mint 22.1 (Xia)  -- PREVIOUS STABLE
-item --gap --             
-item --gap --             >> SYSTEM OPTIONS
-item return               [X] RETURN TO NETBOOT.XYZ MAIN MENU
+# 标题必须用双引号括起来
+menu "--- LINUX MINT SELECTION ---"
+item --gap --             "==============================================="
+item --gap --             "VERSION SELECTION:"
+item mint_22_3_menu       " [22.3]  Linux Mint 22.3 (Zena) - Latest"
+item mint_22_1_menu       " [22.1]  Linux Mint 22.1 (Xia)  - Stable"
+item --gap --             "==============================================="
+item --gap --             "CONTROL:"
+item return               " [BACK]  Return to Main Menu"
 choose target && goto ${target}
 
-# --- 22.3 子菜单 ---
 :mint_22_3_menu
-menu --- [ EDITION: LINUX MINT 22.3 (ZENA) ] ---
-item --gap --             Available Desktop Environments:
-item mint_22_3_cinnamon    +-- CINNAMON (Modern, Sleek)
-item mint_22_3_mate        +-- MATE     (Traditional, Fast)
-item mint_22_3_xfce        +-- XFCE     (Lightweight, Stable)
+menu "--- LINUX MINT 22.3 EDITIONS ---"
+item --gap --             "Select Desktop Environment:"
+item mint_22_3_cinnamon    "  > Cinnamon Edition (Modern)"
+item mint_22_3_mate        "  > MATE Edition     (Classic)"
+item mint_22_3_xfce        "  > XFCE Edition     (Lightweight)"
 item --gap --             
-item custom_menu          [B] BACK TO VERSION SELECTION
+item custom_menu           " [BACK]  Back to Version Selection"
 choose target && goto ${target}
 
-# --- 22.1 子菜单 ---
 :mint_22_1_menu
-menu --- [ EDITION: LINUX MINT 22.1 (XIA) ] ---
-item --gap --             Available Desktop Environments:
-item mint_22_1_cinnamon    +-- CINNAMON (Default)
-item mint_22_1_mate        +-- MATE     (Classic)
-item mint_22_1_xfce        +-- XFCE     (Lite)
+menu "--- LINUX MINT 22.1 EDITIONS ---"
+item --gap --             "Select Desktop Environment:"
+item mint_22_1_cinnamon    "  > Cinnamon Edition"
+item mint_22_1_mate        "  > MATE Edition"
+item mint_22_1_xfce        "  > XFCE Edition"
 item --gap --             
-item custom_menu          [B] BACK TO VERSION SELECTION
+item custom_menu           " [BACK]  Back to Version Selection"
 choose target && goto ${target}
 
-# --- 引导逻辑 ---
+# --- 引导逻辑保持不变 ---
 :mint_22_3_cinnamon
 set iso_url http://netcologne.de
 goto boot_iso
@@ -60,7 +58,6 @@ set iso_url http://netcologne.de
 goto boot_iso
 
 :boot_iso
-echo Loading Linux Mint from: ${iso_url}
 kernel https://netboot.xyz iso raw
 initrd ${iso_url}
 boot
